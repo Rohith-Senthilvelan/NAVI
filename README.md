@@ -1,1 +1,1 @@
-NAVI — Your AI Financial Coach
+NAVI — Your AI Financial Coach.
