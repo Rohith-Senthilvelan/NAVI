@@ -258,7 +258,7 @@ export const mockGoals: MockGoal[] = [
     target: 10000,
     current: 4200,
     deadline: "2026-12-31",
-    color: "#00E0B8",
+    color: "#6E56FF",
   },
   {
     id: "goal-2",
@@ -266,7 +266,7 @@ export const mockGoals: MockGoal[] = [
     target: 6000,
     current: 1850,
     deadline: "2027-03-01",
-    color: "#5BFFCC",
+    color: "#9B7BFF",
   },
   {
     id: "goal-3",
@@ -274,7 +274,7 @@ export const mockGoals: MockGoal[] = [
     target: 4800,
     current: 900,
     deadline: "2026-09-15",
-    color: "#D4AF37",
+    color: "#F5C453",
   },
 ];
 
@@ -674,7 +674,7 @@ const SUB_COLORS: Record<string, string> = {
   "Adobe Creative Cloud": "#FF0000",
   "iCloud+": "#007AFF",
   "Amazon Prime": "#FF9900",
-  "Fitness First": "#00E0B8",
+  "Fitness First": "#6E56FF",
   "Du Home Internet": "#00A0D2",
   "Canva Pro": "#00C4CC",
 };
@@ -741,3 +741,31 @@ export const subscriptions: Subscription[] = mockSubscriptions.map((s) => ({
           : undefined,
   alternatives: SUB_ALTERNATIVES[s.name],
 }));
+
+export type WeeklyRecommendation = {
+  id: string;
+  icon: "shopping" | "tv" | "plane";
+  text: string;
+  cta: "Apply" | "Review";
+};
+
+export const mockWeeklyRecommendations: WeeklyRecommendation[] = [
+  {
+    id: "rec-1",
+    icon: "shopping",
+    text: "Reduce Shopping by AED 200 — you've used 92% of budget.",
+    cta: "Apply",
+  },
+  {
+    id: "rec-2",
+    icon: "tv",
+    text: "Pause Netflix (47d unused) — save AED 39/mo.",
+    cta: "Review",
+  },
+  {
+    id: "rec-3",
+    icon: "plane",
+    text: "Boost Travel goal by AED 100/mo to hit Bali by Aug.",
+    cta: "Apply",
+  },
+];

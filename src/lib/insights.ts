@@ -57,16 +57,16 @@ export interface HeatmapCell {
 }
 
 const CATEGORY_COLORS: Record<TransactionCategory, string> = {
-  Food: "#00E0B8",
-  Groceries: "#5BFFCC",
-  Transport: "#6366F1",
-  Shopping: "#D4AF37",
-  Bills: "#F59E0B",
-  Subscriptions: "#8B5CF6",
-  Entertainment: "#EC4899",
-  Health: "#10B981",
-  Travel: "#3B82F6",
-  Other: "#64748B",
+  Food: "#6E56FF",
+  Groceries: "#4FD1FF",
+  Transport: "#9B7BFF",
+  Shopping: "#F5C453",
+  Bills: "#FF6FB5",
+  Subscriptions: "#4F46FF",
+  Entertainment: "#8B6FFF",
+  Health: "#2A1F6E",
+  Travel: "#6B7099",
+  Other: "#6B7099",
 };
 
 const FOOD_MERCHANTS = new Set([
