@@ -1,36 +1,117 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Navi
 
-## Getting Started
+**Money that thinks for you.**
 
-First, run the development server:
+Navi is an AI-powered financial coach built for individuals and SMEs in the UAE. It unifies budgeting, savings, subscriptions, and investment guidance into one conversational interface — so you always know what to do next with your money, without opening five banking apps.
+
+---
+
+## Demo credentials
+
+| Field    | Value            |
+| -------- | ---------------- |
+| Email    | `user@navi.demo` |
+| Password | `Demo123!@#`     |
+
+**Pitch mode:** visit [`/demo`](http://localhost:3000/demo) for a 90-second auto-guided tour (press **SPACE** to pause).
+
+**Reset during a live demo:** Settings → **Reset demo data**.
+
+---
+
+## Quick start
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install && npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). Log in with the demo credentials above.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Bundle analysis
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run analyze
+```
 
-## Learn More
+Opens an interactive bundle report after build.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tech stack
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Layer      | Tools                                              |
+| ---------- | -------------------------------------------------- |
+| Framework  | Next.js 14 (App Router), React 18, TypeScript      |
+| Styling    | Tailwind CSS, Radix UI, Framer Motion              |
+| State      | Zustand (persisted user + advisor chat)            |
+| Charts     | Recharts (lazy-loaded per route)                   |
+| AI         | OpenAI API (advisor route with mock fallback)    |
+| Fonts      | Geist (local), Instrument Serif via `next/font`    |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Feature | Description |
+| ------- | ----------- |
+| Dashboard | Live KPIs, spend breakdown, budget health, recent transactions |
+| Budget | Category caps, rebalance suggestions, vs-actual charts |
+| Savings | Goals, round-ups, one-tap boosts |
+| Insights | Signature Digs feed, spending heatmap, category trends |
+| Subscriptions | Unused-sub detection, pause/cancel flows |
+| Advisor | Streaming AI coach with actionable cards |
+| Circles | Group savings with payout schedules |
+| Invest | Risk profiler + suggested allocation |
+| Onboarding | 4-step first-login product tour |
+
+### Screenshots
+
+> _Add screenshots here before the pitch._
+
+| Screen | Placeholder |
+| ------ | ----------- |
+| Landing | `![Landing](./docs/screenshots/landing.png)` |
+| Dashboard | `![Dashboard](./docs/screenshots/dashboard.png)` |
+| Advisor | `![Advisor](./docs/screenshots/advisor.png)` |
+| Insights | `![Insights](./docs/screenshots/insights.png)` |
+
+---
+
+## Roadmap
+
+- **Multi-bank aggregation** — live feeds from UAE banks via open banking
+- **Real APIs** — production Plaid/Lean/Tarabut integrations, not mock data
+- **Arabic-first** — RTL layout, Gulf dialect advisor, localized insights
+- **Business advisor** — SME cash-flow coach, VAT reminders, team seats
+
+---
+
+## Pitch story
+
+### Problem
+
+People in the Gulf juggle multiple accounts, subscriptions, and savings goals across apps that never talk to each other. By the time they notice overspending, the month is already gone.
+
+### Solution
+
+Navi is a single AI coach that reads your financial picture, surfaces what matters, and proposes one-tap fixes — rebalance a budget, pause a unused sub, boost a goal.
+
+### Demo flow
+
+1. **Dashboard** — KPIs and spend at a glance  
+2. **Ask Navi** — natural-language budget review with an action card  
+3. **Budget alert** — category crossing 80% cap  
+4. **Savings boost** — one-tap goal top-up  
+5. **Insights feed** — personalized Signature Digs  
+
+Run the full sequence automatically at `/demo`.
+
+### Vision
+
+Navi becomes the default money layer for the Gulf — personal finance today, business CFO tomorrow, Arabic-first and bank-connected at scale.
+
+---
+
+## License
+
+Private — hackathon demo build.
