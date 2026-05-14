@@ -18,7 +18,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Eye,
-  Loader2,
   Mic,
   Paperclip,
   PanelLeftClose,
@@ -49,14 +48,14 @@ function NaviOrb({ size = 36 }: { size?: number }) {
         className="absolute inset-0 rounded-full opacity-60 blur-md"
         style={{
           background:
-            "linear-gradient(135deg, #00E0B8 0%, #5BFFCC 50%, #1B2349 100%)",
+            "linear-gradient(135deg, #6E56FF 0%, #9B7BFF 50%, #1B2349 100%)",
         }}
       />
       <motion.div
         className="relative h-full w-full rounded-full border border-white/20"
         style={{
           background:
-            "linear-gradient(135deg, #00E0B8 0%, #5BFFCC 40%, #1B2349 120%)",
+            "linear-gradient(135deg, #6E56FF 0%, #9B7BFF 40%, #1B2349 120%)",
         }}
       />
     </motion.div>
@@ -314,9 +313,9 @@ export default function AdvisorPage() {
         className="pointer-events-none absolute inset-0"
         animate={{
           background: [
-            "radial-gradient(ellipse 80% 60% at 20% 20%, rgba(0,224,184,0.08), transparent), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(27,35,73,0.5), transparent), #0A0E1A",
-            "radial-gradient(ellipse 70% 55% at 75% 25%, rgba(0,224,184,0.1), transparent), radial-gradient(ellipse 55% 45% at 25% 75%, rgba(91,255,204,0.06), transparent), #0A0E1A",
-            "radial-gradient(ellipse 80% 60% at 20% 20%, rgba(0,224,184,0.08), transparent), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(27,35,73,0.5), transparent), #0A0E1A",
+            "radial-gradient(ellipse 80% 60% at 20% 20%, rgba(110,86,255,0.08), transparent), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(42,31,110,0.5), transparent), #05060F",
+            "radial-gradient(ellipse 70% 55% at 75% 25%, rgba(110,86,255,0.1), transparent), radial-gradient(ellipse 55% 45% at 25% 75%, rgba(155,123,255,0.06), transparent), #05060F",
+            "radial-gradient(ellipse 80% 60% at 20% 20%, rgba(110,86,255,0.08), transparent), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(42,31,110,0.5), transparent), #05060F",
           ],
         }}
         transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
@@ -437,9 +436,9 @@ export default function AdvisorPage() {
                   {msg.content ? (
                     renderMarkdownLite(msg.content)
                   ) : isLoading ? (
-                    <span className="flex items-center gap-2 text-text-mid">
-                      <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                      Navi is thinking…
+                    <span className="flex w-full max-w-[200px] flex-col gap-2 py-1">
+                      <div className="skeleton-shimmer h-3 w-full rounded-md" />
+                      <div className="skeleton-shimmer h-3 w-4/5 rounded-md" />
                     </span>
                   ) : null}
                   {msg.role === "assistant" && msg.content && (

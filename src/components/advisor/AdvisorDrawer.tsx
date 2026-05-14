@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader2, Send, Sparkles } from "lucide-react";
+import { Send, Sparkles } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -90,7 +90,7 @@ export function AdvisorDrawer() {
           </div>
         </SheetHeader>
 
-        <ScrollArea className="flex-1 px-4 py-4">
+        <ScrollArea className="flex-1 px-4 py-4" data-lenis-prevent>
           <div className="space-y-4">
             {messages.map((msg) => (
               <div
@@ -114,9 +114,9 @@ export function AdvisorDrawer() {
             ))}
             {isLoading && (
               <div className="flex justify-start">
-                <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm text-text-mid">
-                  <Loader2 className="h-3.5 w-3.5 animate-spin text-accent" />
-                  Navi is thinking…
+                <div className="flex w-40 flex-col gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3">
+                  <div className="skeleton-shimmer h-3 w-full rounded-md" />
+                  <div className="skeleton-shimmer h-3 w-3/4 rounded-md" />
                 </div>
               </div>
             )}
