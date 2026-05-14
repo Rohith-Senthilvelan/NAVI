@@ -5,18 +5,21 @@ export const geistSans = localFont({
   src: "../app/fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
+  display: "swap",
 });
 
 export const geistMono = localFont({
   src: "../app/fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
+  display: "swap",
 });
 
 export const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
   variable: "--font-instrument-serif",
   weight: "400",
+  display: "swap",
 });
 
 export const fontVariables = `${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`;
