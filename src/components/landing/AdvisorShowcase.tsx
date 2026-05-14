@@ -64,7 +64,7 @@ export function AdvisorShowcase() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           onViewportEnter={() => setStarted(true)}
-          className="rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-xl"
+          className="rounded-3xl border border-white/10 bg-white/[0.04] p-6"
         >
           <div className="mb-4 flex items-center gap-2 border-b border-white/10 pb-4">
             <motion.div className="h-3 w-3 rounded-full bg-accent" />

@@ -25,7 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className={`${fontVariables} noise-overlay min-h-screen`}>
+      <body className={`${fontVariables} min-h-screen`}>
         <Providers>{children}</Providers>
       </body>
     </html>

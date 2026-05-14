@@ -26,14 +26,14 @@ export function Marquee() {
   return (
     <section className="relative overflow-hidden border-y border-white/10 py-6">
       <div className="group flex">
-        <div className="flex min-w-full shrink-0 animate-marquee items-center gap-4 group-hover:[animation-play-state:paused]">
+        <div className="gpu-layer flex min-w-full shrink-0 animate-marquee items-center gap-4 group-hover:[animation-play-state:paused]">
           {doubled.map((item, i) => (
             <MarqueeCard key={`${item.label}-${i}`} {...item} />
           ))}
         </div>
         <div
           aria-hidden
-          className="flex min-w-full shrink-0 animate-marquee items-center gap-4 group-hover:[animation-play-state:paused]"
+          className="gpu-layer flex min-w-full shrink-0 animate-marquee items-center gap-4 group-hover:[animation-play-state:paused]"
         >
           {doubled.map((item, i) => (
             <MarqueeCard key={`dup-${item.label}-${i}`} {...item} />
@@ -54,7 +54,7 @@ function MarqueeCard({
   return (
     <div
       className={cn(
-        "mx-2 flex shrink-0 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 backdrop-blur-md transition-colors hover:border-accent/30 hover:bg-white/[0.06]"
+        "mx-2 flex shrink-0 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 transition-colors hover:border-accent/30 hover:bg-white/[0.06]"
       )}
     >
       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10">

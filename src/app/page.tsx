@@ -4,7 +4,6 @@ import dynamic from "next/dynamic";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
 import { Marquee } from "@/components/landing/Marquee";
-import { SmoothScroll } from "@/components/shared/smooth-scroll";
 
 const ProblemSolution = dynamic(
   () => import("@/components/landing/ProblemSolution").then((m) => m.ProblemSolution),
@@ -41,7 +40,7 @@ const CtaBlock = dynamic(
 
 export default function HomePage() {
   return (
-    <SmoothScroll>
+    <>
       <Navbar />
       <main className="overflow-x-hidden">
         <Hero />
@@ -55,6 +54,6 @@ export default function HomePage() {
         <Faq />
         <CtaBlock />
       </main>
-    </SmoothScroll>
+    </>
   );
 }

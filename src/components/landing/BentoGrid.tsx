@@ -24,7 +24,7 @@ function BentoTile({
       variants={fadeUp}
       whileHover={{ y: -4 }}
       className={cn(
-        "group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-md transition-shadow hover:shadow-xl hover:shadow-accent/5",
+        "group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-6 transition-shadow hover:shadow-xl hover:shadow-accent/5",
         gold && "border-gold/40 shadow-gold/5",
         className
       )}

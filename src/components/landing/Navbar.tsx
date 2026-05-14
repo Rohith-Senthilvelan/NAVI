@@ -2,13 +2,7 @@
 
 import { Sparkles } from "lucide-react";
 import Link from "next/link";
-import {
-  motion,
-  useMotionValueEvent,
-  useScroll,
-  useTransform,
-} from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MagneticButton } from "@/components/shared/magnetic-button";
 import { cn } from "@/lib/utils";
 
@@ -20,21 +14,25 @@ const links = [
 ];
 
 export function Navbar() {
-  const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
-  const width = useTransform(scrollY, [0, 80], ["92%", "78%"]);
-  const padding = useTransform(scrollY, [0, 80], [16, 10]);
 
-  useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 40));
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <div className="pointer-events-none fixed inset-x-0 top-6 z-50 flex justify-center px-4">
-      <motion.nav
-        style={{ width, paddingTop: padding, paddingBottom: padding }}
+      <nav
         className={cn(
-          "pointer-events-auto flex items-center justify-between rounded-full border border-white/10 bg-white/[0.04] px-5 shadow-2xl backdrop-blur-[24px] transition-colors duration-300",
-          scrolled && "border-white/20 bg-white/[0.06] shadow-accent/5"
+          "pointer-events-auto flex w-[min(92%,900px)] items-center justify-between rounded-full border border-white/10 bg-primary/80 px-5 shadow-2xl transition-[width,padding,background-color,border-color] duration-300 ease-out",
+          scrolled &&
+            "w-[min(78%,720px)] border-white/20 bg-primary/90 shadow-accent/5"
         )}
+        style={{ paddingTop: scrolled ? 10 : 16, paddingBottom: scrolled ? 10 : 16 }}
+        aria-label="Main navigation"
       >
         <Link href="/" className="group flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-accent transition-transform group-hover:rotate-12" />
@@ -55,7 +53,7 @@ export function Navbar() {
           ))}
         </div>
 
-        <motion.div className="flex items-center gap-2">
+        <div className="flex items-center gap-2">
           <Link
             href="/login"
             className="hidden rounded-full px-4 py-2 text-sm text-text-mid transition-colors hover:bg-white/5 hover:text-text-high sm:inline-flex"
@@ -67,8 +65,8 @@ export function Navbar() {
               Open Navi
             </span>
           </MagneticButton>
-        </motion.div>
-      </motion.nav>
+        </div>
+      </nav>
     </div>
   );
 }
