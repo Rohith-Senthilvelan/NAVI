@@ -10,6 +10,12 @@ export const metadata: Metadata = {
   },
   description:
     "AI-powered financial coach for individuals and SMEs in the UAE.",
+  openGraph: {
+    title: "Navi — Money that thinks for you.",
+    description:
+      "AI-powered financial coach for individuals and SMEs in the UAE.",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
