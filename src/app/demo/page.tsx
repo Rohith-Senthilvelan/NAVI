@@ -30,7 +30,7 @@ export default function DemoPitchPage() {
       >
         <Sparkles className="h-8 w-8 text-accent" aria-hidden />
       </motion.div>
-      <h1 className="font-display text-3xl text-text-high">
+      <h1 className="text-3xl font-bold tracking-tight text-text-high">
         Navi pitch demo
       </h1>
       <p className="mt-3 max-w-md text-sm text-text-mid">

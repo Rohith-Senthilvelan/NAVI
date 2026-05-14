@@ -224,7 +224,7 @@ export default function LoginPage() {
                 transition={{ duration: 0.5 }}
                 className="absolute inset-0"
               >
-                <p className="font-display text-3xl leading-snug text-text-high xl:text-4xl">
+                <p className="text-3xl font-bold leading-snug tracking-tight text-text-high xl:text-4xl">
                   &ldquo;{TESTIMONIALS[quoteIndex].quote}&rdquo;
                 </p>
                 <footer className="mt-6 flex items-center gap-3">
@@ -291,12 +291,12 @@ export default function LoginPage() {
 
       {/* Right — login form */}
       <motion.div
-        className="relative flex items-center justify-center bg-gradient-to-br from-[#0c1020] via-primary to-[#0a0e1a] p-6 sm:p-10"
+        className="relative flex items-center justify-center bg-gradient-hero p-6 sm:p-10"
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(0,224,184,0.06),_transparent_60%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(110,86,255,0.06),_transparent_60%)]" />
 
         <div className="relative w-full max-w-md">
           <div className="mb-8 flex items-center gap-2 lg:hidden">

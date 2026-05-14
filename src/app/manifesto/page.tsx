@@ -45,29 +45,31 @@ export default function ManifestoPage() {
       </header>
 
       <article className="mx-auto max-w-3xl px-6 py-16 sm:py-24">
-        <h1 className="font-display text-4xl leading-tight sm:text-5xl lg:text-6xl">
+        <h1 className="type-h2">
           We believe money should be{" "}
-          <span className="text-accent">clear, kind, and on your side.</span>
+          <span className="bg-gradient-to-r from-[#6E56FF] to-[#9B7BFF] bg-clip-text text-transparent">
+            clear, kind, and on your side.
+          </span>
         </h1>
-        <p className="mt-8 font-display text-xl leading-relaxed text-text-mid sm:text-2xl">
+        <p className="type-body-lg mt-8">
           Navi is an AI financial coach for people who are tired of guessing — and ready to grow with intention.
         </p>
 
-        <div className="mt-16 space-y-12 border-t border-white/10 pt-16">
+        <div className="mt-16 space-y-12 border-t border-white/[0.06] pt-16">
           {SECTIONS.map((section) => (
             <section key={section.lead}>
-              <h2 className="font-display text-2xl text-text-high sm:text-3xl">
+              <h2 className="type-h3">
                 {section.lead}
               </h2>
-              <p className="mt-4 font-display text-lg leading-relaxed text-text-mid">
+              <p className="mt-4 text-lg leading-relaxed text-text-mid">
                 {section.body}
               </p>
             </section>
           ))}
         </div>
 
-        <footer className="mt-20 border-t border-white/10 pt-10 text-center">
-          <p className="font-display text-lg text-text-mid">
+        <footer className="mt-20 border-t border-white/[0.06] pt-10 text-center">
+          <p className="text-lg text-text-mid">
             Ready to start?{" "}
             <Link href="/login" className="text-accent underline-offset-4 hover:underline">
               Open Navi
