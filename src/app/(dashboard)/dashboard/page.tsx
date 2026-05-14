@@ -3,6 +3,7 @@
 import { KpiCard } from "@/components/dashboard/KpiCard";
 import { GamificationWidget } from "@/components/dashboard/GamificationWidget";
 import { ChartSkeleton } from "@/components/charts/chart-skeleton";
+import { EmptyState } from "@/components/shared/empty-state";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,13 +19,15 @@ import {
   mockInsights,
   mockSubscriptions,
   mockTransactions,
+  mockWeeklyRecommendations,
   type MockTransaction,
   type TransactionCategory,
 } from "@/lib/mock-data";
+import { paletteColor, progressBarClass, progressTextClass } from "@/lib/chart-palette";
 import { useAdvisorStore, useUIStore } from "@/lib/store";
 import { cn, formatAED } from "@/lib/utils";
 import { motion, type Variants } from "framer-motion";
-import { ArrowUpRight, Sparkles, TrendingUp, X } from "lucide-react";
+import { ArrowUpRight, Plane, Receipt, ShoppingBag, Sparkles, Tv, X } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 
@@ -48,17 +51,11 @@ const SPENT_SPARKLINE = [980, 1640, 2180, 2890, 3320, 3780, 4210];
 const SAVINGS_SPARKLINE = [120, 240, 310, 420, 510, 580, 620];
 const ROUNDUP_SPARKLINE = [12, 28, 41, 55, 63, 78, 87.4];
 
-const CATEGORY_COLORS: Record<string, string> = {
-  Food: "#00E0B8",
-  Groceries: "#5BFFCC",
-  Transport: "#6366F1",
-  Shopping: "#D4AF37",
-  Bills: "#F59E0B",
-  Subscriptions: "#8B5CF6",
-  Entertainment: "#EC4899",
-  Health: "#10B981",
-  Travel: "#3B82F6",
-};
+const REC_ICONS = {
+  shopping: ShoppingBag,
+  tv: Tv,
+  plane: Plane,
+} as const;
 
 const SEVERITY_DOT: Record<string, string> = {
   info: "bg-blue-400",
@@ -178,12 +175,6 @@ function ProgressRing({
   );
 }
 
-function budgetBarColor(pct: number) {
-  if (pct > 100) return "bg-red-500";
-  if (pct >= 70) return "bg-amber-400";
-  return "bg-accent";
-}
-
 function categoryBadgeClass(category: string) {
   const colors: Record<string, string> = {
     Food: "border-accent/30 bg-accent/10 text-accent",
@@ -213,10 +204,10 @@ export default function DashboardPage() {
       if (tx.category === "Other") continue;
       totals[tx.category] = (totals[tx.category] ?? 0) + tx.amount;
     }
-    const raw = Object.entries(totals).map(([category, amount]) => ({
+    const raw = Object.entries(totals).map(([category, amount], i) => ({
       category: category as TransactionCategory,
       value: Math.round(amount * 100) / 100,
-      color: CATEGORY_COLORS[category] ?? "#00E0B8",
+      color: paletteColor(i),
     }));
     const total = raw.reduce((s, d) => s + d.value, 0);
     const scale = DISPLAY.monthSpent / total;
@@ -310,31 +301,26 @@ export default function DashboardPage() {
           value={DISPLAY.balance}
           decimals={2}
           sparklineData={BALANCE_SPARKLINE}
+          delta={DISPLAY.weekChange}
           delay={0}
-          badge={
-            <span className="inline-flex items-center gap-1 rounded-full border border-accent/25 bg-accent/10 px-2 py-0.5 text-[10px] font-medium text-accent">
-              <TrendingUp className="h-3 w-3" />+{DISPLAY.weekChange}%
-            </span>
-          }
-          footer={<span className="text-text-mid">vs last week</span>}
         />
         <KpiCard
           label="This Month Spent"
           value={DISPLAY.monthSpent}
           sparklineData={SPENT_SPARKLINE}
-          sparklineColor="#F59E0B"
+          sparklineColor="#F5C453"
           delay={0.06}
           footer={
             <div className="flex items-center gap-2">
-              <div className="h-1 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
+              <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
                 <motion.div
-                  className="h-full rounded-full bg-amber-400"
+                  className={cn("h-full rounded-full", progressBarClass(budgetConsumedPct))}
                   initial={{ width: 0 }}
-                  animate={{ width: `${budgetConsumedPct}%` }}
+                  animate={{ width: `${Math.min(budgetConsumedPct, 100)}%` }}
                   transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
                 />
               </div>
-              <span className="shrink-0 font-mono text-[11px] text-amber-300">
+              <span className={cn("shrink-0 font-mono text-[11px]", progressTextClass(budgetConsumedPct))}>
                 {budgetConsumedPct}% of budget
               </span>
             </div>
@@ -347,17 +333,15 @@ export default function DashboardPage() {
           delay={0.12}
           footer={
             <div className="flex items-center gap-2">
-              <motion.div
-                className="h-1 flex-1 overflow-hidden rounded-full bg-white/[0.06]"
-              >
+              <motion.div className="h-2.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]">
                 <motion.div
-                  className="h-full rounded-full bg-accent"
+                  className={cn("h-full rounded-full", progressBarClass(savingsGoalPct))}
                   initial={{ width: 0 }}
-                  animate={{ width: `${savingsGoalPct}%` }}
+                  animate={{ width: `${Math.min(savingsGoalPct, 100)}%` }}
                   transition={{ duration: 1, delay: 0.5 }}
                 />
               </motion.div>
-              <span className="shrink-0 text-[11px]">
+              <span className={cn("shrink-0 text-[11px]", progressTextClass(savingsGoalPct))}>
                 {savingsGoalPct}% toward goals
               </span>
             </div>
@@ -368,7 +352,7 @@ export default function DashboardPage() {
           value={DISPLAY.roundUps}
           decimals={2}
           sparklineData={ROUNDUP_SPARKLINE}
-          sparklineColor="#5BFFCC"
+          sparklineColor="#4FD1FF"
           delay={0.18}
           badge={
             <span className="rounded-full border border-accent-secondary/25 bg-accent-secondary/10 px-2 py-0.5 text-[10px] font-medium text-accent-secondary">
@@ -388,7 +372,7 @@ export default function DashboardPage() {
       >
         <GlassCard title="Spending Breakdown" className="lg:col-span-3">
           <div className="grid gap-6 p-5 md:grid-cols-[1fr_1.1fr]">
-            <motion.div className="relative h-[220px] min-h-[220px] min-w-0">
+            <motion.div className="relative h-[280px] min-h-[280px] min-w-0">
               <SpendPieChart
                 data={categoryBreakdown}
                 monthSpent={DISPLAY.monthSpent}
@@ -401,7 +385,7 @@ export default function DashboardPage() {
                 <span className="text-[10px] uppercase tracking-wider text-text-mid">
                   Total
                 </span>
-                <span className="font-mono text-lg font-semibold text-text-high">
+                <span className="font-mono text-2xl font-extrabold text-text-high">
                   {formatAED(DISPLAY.monthSpent)}
                 </span>
               </div>
@@ -468,12 +452,12 @@ export default function DashboardPage() {
                 </div>
                 <div className="flex items-center gap-3">
                   <motion.div
-                    className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]"
+                    className="h-2.5 flex-1 overflow-hidden rounded-full bg-white/[0.06]"
                   >
                     <motion.div
                       className={cn(
                         "h-full rounded-full",
-                        budgetBarColor(b.pct)
+                        progressBarClass(b.pct)
                       )}
                       initial={{ width: 0 }}
                       animate={{ width: `${Math.min(b.pct, 100)}%` }}
@@ -483,11 +467,7 @@ export default function DashboardPage() {
                   <span
                     className={cn(
                       "w-9 text-right font-mono text-[11px]",
-                      b.pct > 100
-                        ? "text-red-400"
-                        : b.pct >= 70
-                          ? "text-amber-300"
-                          : "text-accent"
+                      progressTextClass(b.pct)
                     )}
                   >
                     {b.pct}%
@@ -496,7 +476,7 @@ export default function DashboardPage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="h-7 shrink-0 px-2 text-[10px] text-accent hover:bg-accent/10 hover:text-accent"
+                      className="h-6 shrink-0 rounded-full border border-white/10 px-2.5 text-[10px] text-text-mid hover:border-accent/30 hover:bg-accent/10 hover:text-accent"
                       onClick={() =>
                         handleFixBudget(b.category, b.spent, b.budget)
                       }
@@ -659,16 +639,55 @@ export default function DashboardPage() {
                 ))}
                 {filteredTransactions.length === 0 && (
                   <tr>
-                    <td
-                      colSpan={4}
-                      className="px-5 py-8 text-center text-sm text-text-mid"
-                    >
-                      No transactions in this category.
+                    <td colSpan={4} className="p-0">
+                      <EmptyState
+                        icon={Receipt}
+                        description="No transactions in this category yet."
+                        actionLabel="Clear filter"
+                        onAction={() => setSelectedCategory(null)}
+                        className="border-0 bg-transparent"
+                      />
                     </td>
                   </tr>
                 )}
               </tbody>
             </table>
+          </div>
+        </GlassCard>
+      </motion.div>
+
+      {/* Weekly recommendations */}
+      <motion.div
+        custom={3}
+        initial="hidden"
+        animate="visible"
+        variants={rowVariants}
+      >
+        <GlassCard title="Navi's recommendations for this week">
+          <div className="grid gap-3 p-5 md:grid-cols-3">
+            {mockWeeklyRecommendations.map((rec) => {
+              const Icon = REC_ICONS[rec.icon];
+              return (
+                <div
+                  key={rec.id}
+                  className="flex flex-col gap-3 rounded-xl border border-white/[0.08] bg-white/[0.02] p-4 transition-shadow hover:shadow-[0_0_0_1px_rgba(110,86,255,0.25)]"
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-accent/10">
+                      <Icon className="h-4 w-4 text-accent" />
+                    </div>
+                    <p className="text-sm leading-snug text-text-high">{rec.text}</p>
+                  </div>
+                  <Button
+                    size="sm"
+                    className="mt-auto w-full rounded-full bg-gradient-button text-primary hover:opacity-90"
+                    onClick={() => openAdvisor(rec.text)}
+                  >
+                    {rec.cta}
+                  </Button>
+                </div>
+              );
+            })}
           </div>
         </GlassCard>
       </motion.div>
@@ -742,7 +761,7 @@ export default function DashboardPage() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.97 }}
         onClick={() => setAdvisorDrawerOpen(true)}
-        className="fixed bottom-8 right-8 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-accent via-accent-secondary to-accent shadow-[0_0_40px_-4px_rgba(0,224,184,0.55)] ring-2 ring-accent/30 transition-shadow hover:shadow-[0_0_56px_-4px_rgba(0,224,184,0.7)] lg:bottom-10 lg:right-10"
+        className="fixed bottom-8 right-8 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-accent via-accent-secondary to-accent shadow-[0_0_40px_-4px_rgba(110,86,255,0.55)] ring-2 ring-accent/30 transition-shadow hover:shadow-[0_0_56px_-4px_rgba(110,86,255,0.7)] lg:bottom-10 lg:right-10"
         aria-label="Ask Navi"
         data-tour="ask-navi-fab"
       >

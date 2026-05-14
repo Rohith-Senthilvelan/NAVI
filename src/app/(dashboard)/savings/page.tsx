@@ -167,8 +167,8 @@ function SavingsJar({ fillPct }: { fillPct: number }) {
     <svg viewBox="0 0 160 220" className="mx-auto h-[220px] w-[160px]">
       <defs>
         <linearGradient id="jarLiquid" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#5BFFCC" stopOpacity="0.9" />
-          <stop offset="100%" stopColor="#00E0B8" stopOpacity="0.55" />
+          <stop offset="0%" stopColor="#9B7BFF" stopOpacity="0.9" />
+          <stop offset="100%" stopColor="#6E56FF" stopOpacity="0.55" />
         </linearGradient>
         <clipPath id="jarClip">
           <path d="M48 72 Q48 58 80 58 Q112 58 112 72 L118 188 Q118 204 80 204 Q42 204 42 188 Z" />
@@ -204,7 +204,7 @@ function SavingsJar({ fillPct }: { fillPct: number }) {
           cy={liquidY + 4}
           rx="36"
           ry="6"
-          fill="rgba(91,255,204,0.35)"
+          fill="rgba(155,123,255,0.35)"
         />
       </g>
       <text
@@ -326,7 +326,7 @@ export default function SavingsPage() {
       return;
     }
 
-    const colors = ["#00E0B8", "#5BFFCC", "#D4AF37", "#6366F1"];
+    const colors = ["#6E56FF", "#9B7BFF", "#F5C453", "#6366F1"];
     addGoal({
       name: formName,
       target,

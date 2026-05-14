@@ -54,8 +54,8 @@ const PROFILE_ICONS: Record<RiskProfile, typeof Shield> = {
 
 const PROFILE_COLORS: Record<RiskProfile, string> = {
   conservative: "#6366F1",
-  balanced: "#00E0B8",
-  aggressive: "#D4AF37",
+  balanced: "#6E56FF",
+  aggressive: "#F5C453",
 };
 
 const RISK_STYLES = {

@@ -32,6 +32,7 @@ import {
   useFinanceStore,
   useToastStore,
 } from "@/lib/store";
+import { progressBarClass } from "@/lib/chart-palette";
 import { cn, formatAED } from "@/lib/utils";
 import { motion } from "framer-motion";
 import {
@@ -105,12 +106,6 @@ function refDayOfMonth() {
 function budgetPct(spent: number, allocated: number) {
   if (allocated <= 0) return 0;
   return Math.round((spent / allocated) * 100);
-}
-
-function barColor(pct: number) {
-  if (pct > 100) return "bg-red-500";
-  if (pct >= 70) return "bg-amber-400";
-  return "bg-accent";
 }
 
 function buildNaviTake(budgets: BudgetCategory[]) {
@@ -245,7 +240,7 @@ export default function BudgetPage() {
         </div>
         <Button
           onClick={() => setNewBudgetOpen(true)}
-          className="rounded-full bg-gradient-to-r from-accent to-accent-secondary px-5 text-primary shadow-[0_0_24px_-4px_rgba(0,224,184,0.45)] hover:opacity-90"
+          className="rounded-full bg-gradient-to-r from-accent to-accent-secondary px-5 text-primary shadow-[0_0_24px_-4px_rgba(110,86,255,0.45)] hover:opacity-90"
         >
           <Plus className="h-4 w-4" />
           New Budget
@@ -285,7 +280,7 @@ export default function BudgetPage() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.04, duration: 0.45 }}
-                  className="group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5 backdrop-blur-xl transition-shadow hover:border-accent/15 hover:shadow-[0_0_32px_-8px_rgba(0,224,184,0.2)]"
+                  className="group relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/[0.03] p-5 backdrop-blur-xl transition-shadow hover:border-accent/15 hover:shadow-[0_0_32px_-8px_rgba(110,86,255,0.2)]"
                 >
                   <motion.div
                     className="flex items-start justify-between gap-2"
@@ -323,9 +318,9 @@ export default function BudgetPage() {
                     </span>
                   </p>
 
-                  <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
+                  <div className="mt-3 h-2.5 overflow-hidden rounded-full bg-white/[0.06]">
                     <motion.div
-                      className={cn("h-full rounded-full", barColor(pct))}
+                      className={cn("h-full rounded-full", progressBarClass(pct))}
                       initial={{ width: 0 }}
                       animate={{ width: `${Math.min(pct, 100)}%` }}
                       transition={{ duration: 0.7, delay: 0.1 + i * 0.03 }}
