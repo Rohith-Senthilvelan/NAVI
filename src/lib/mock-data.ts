@@ -66,6 +66,22 @@ export interface MockInsight {
 export interface MockCircleMember {
   name: string;
   initials: string;
+  contributed?: number;
+}
+
+export interface CircleContribution {
+  id: string;
+  memberName: string;
+  amount: number;
+  date: string;
+}
+
+export interface CirclePayout {
+  id: string;
+  label: string;
+  date: string;
+  amount: number;
+  status: "scheduled" | "completed";
 }
 
 export interface MockCircle {
@@ -74,6 +90,9 @@ export interface MockCircle {
   members: MockCircleMember[];
   monthlyContribution: number;
   totalSaved: number;
+  target: number;
+  contributionHistory: CircleContribution[];
+  payoutSchedule: CirclePayout[];
 }
 
 export interface FinancialContext {
@@ -392,22 +411,61 @@ export const mockCircles: MockCircle[] = [
     id: "circle-1",
     name: "Dubai Trip Fund",
     members: [
-      { name: "Rohith S", initials: "RS" },
-      { name: "Aisha K", initials: "AK" },
-      { name: "Omar H", initials: "OH" },
+      { name: "Rohith S", initials: "RS", contributed: 1500 },
+      { name: "Aisha K", initials: "AK", contributed: 1500 },
+      { name: "Omar H", initials: "OH", contributed: 1500 },
     ],
     monthlyContribution: 500,
     totalSaved: 4500,
+    target: 12000,
+    contributionHistory: [
+      { id: "ch-1", memberName: "Rohith S", amount: 500, date: "2026-05-01" },
+      { id: "ch-2", memberName: "Aisha K", amount: 500, date: "2026-05-01" },
+      { id: "ch-3", memberName: "Omar H", amount: 500, date: "2026-05-01" },
+      { id: "ch-4", memberName: "Rohith S", amount: 500, date: "2026-04-01" },
+      { id: "ch-5", memberName: "Aisha K", amount: 500, date: "2026-04-01" },
+    ],
+    payoutSchedule: [
+      {
+        id: "po-1",
+        label: "Hotel deposit",
+        date: "2026-11-15",
+        amount: 4000,
+        status: "scheduled",
+      },
+      {
+        id: "po-2",
+        label: "Flights",
+        date: "2026-12-01",
+        amount: 5500,
+        status: "scheduled",
+      },
+    ],
   },
   {
     id: "circle-2",
     name: "Emergency Pool",
     members: [
-      { name: "Rohith S", initials: "RS" },
-      { name: "Layla M", initials: "LM" },
+      { name: "Rohith S", initials: "RS", contributed: 1050 },
+      { name: "Layla M", initials: "LM", contributed: 1050 },
     ],
     monthlyContribution: 300,
     totalSaved: 2100,
+    target: 6000,
+    contributionHistory: [
+      { id: "ch-6", memberName: "Rohith S", amount: 300, date: "2026-05-01" },
+      { id: "ch-7", memberName: "Layla M", amount: 300, date: "2026-05-01" },
+      { id: "ch-8", memberName: "Rohith S", amount: 300, date: "2026-04-01" },
+    ],
+    payoutSchedule: [
+      {
+        id: "po-3",
+        label: "Reserve milestone",
+        date: "2026-09-01",
+        amount: 3000,
+        status: "scheduled",
+      },
+    ],
   },
 ];
 
@@ -460,12 +518,21 @@ export interface Transaction {
   merchant?: string;
 }
 
+export type BudgetPeriod = "weekly" | "monthly";
+
 export interface BudgetCategory {
   id: string;
   name: string;
   allocated: number;
   spent: number;
   icon: string;
+  period?: BudgetPeriod;
+}
+
+export interface BudgetMonthSnapshot {
+  month: string;
+  budget: number;
+  actual: number;
 }
 
 export interface SavingsGoal {
@@ -475,20 +542,57 @@ export interface SavingsGoal {
   current: number;
   deadline: string;
   color: string;
+  monthlyContribution: number;
+  paused: boolean;
+}
+
+export type RoundUpNearest = 1 | 5 | 10;
+
+export interface YearSavingsBreakdown {
+  total: number;
+  roundUps: number;
+  autoSave: number;
+  manual: number;
+}
+
+export const savingsYearBreakdown: YearSavingsBreakdown = {
+  total: 1847,
+  roundUps: 412,
+  autoSave: 1200,
+  manual: 235,
+};
+
+export type SubscriptionStatus =
+  | "active"
+  | "unused"
+  | "trial"
+  | "negotiable";
+
+export interface SubscriptionAlternative {
+  name: string;
+  price: number;
 }
 
 export interface Subscription {
   id: string;
   name: string;
+  plan: string;
   amount: number;
   billingCycle: "monthly" | "yearly";
   nextBilling: string;
   category: string;
-  logo?: string;
+  lastUsed: string;
+  status: SubscriptionStatus;
+  logoColor: string;
   active: boolean;
+  snoozed: boolean;
+  customerMonths: number;
+  competitor?: string;
+  competitorPrice?: number;
+  alternatives?: SubscriptionAlternative[];
 }
 
-const BUDGET_ICONS: Record<string, string> = {
+export const BUDGET_ICONS: Record<string, string> = {
   Food: "utensils",
   Groceries: "shopping-cart",
   Transport: "car",
@@ -517,15 +621,123 @@ export const budgetCategories: BudgetCategory[] = mockBudgets.map((b, i) => ({
   allocated: b.budget,
   spent: b.spent,
   icon: BUDGET_ICONS[b.category] ?? "circle",
+  period: "monthly" as const,
 }));
 
-export const savingsGoals: SavingsGoal[] = mockGoals;
+export const TRANSACTION_CATEGORIES = CATEGORIES;
+
+export function getBudgetVsActualHistory(
+  budgets: Pick<BudgetCategory, "allocated" | "spent">[]
+): BudgetMonthSnapshot[] {
+  const totalBudget = budgets.reduce((s, b) => s + b.allocated, 0);
+  const mayActual = budgets.reduce((s, b) => s + b.spent, 0);
+  return [
+    { month: "Mar", budget: totalBudget, actual: Math.round(totalBudget * 0.91) },
+    { month: "Apr", budget: totalBudget, actual: Math.round(totalBudget * 1.03) },
+    { month: "May", budget: totalBudget, actual: mayActual },
+  ];
+}
+
+export const savingsGoals: SavingsGoal[] = mockGoals.map((g, i) => ({
+  ...g,
+  monthlyContribution: [400, 250, 350][i] ?? 200,
+  paused: false,
+}));
+function deriveSubStatus(
+  lastUsed: string,
+  name: string
+): SubscriptionStatus {
+  if (lastUsed.toLowerCase().includes("not used")) return "unused";
+  if (name === "iCloud+") return "trial";
+  if (
+    ["Netflix", "Spotify", "Du Home Internet", "Fitness First"].includes(name)
+  ) {
+    return "negotiable";
+  }
+  return "active";
+}
+
+const SUB_PLANS: Record<string, string> = {
+  Netflix: "Standard",
+  Spotify: "Premium",
+  "Adobe Creative Cloud": "All Apps",
+  "iCloud+": "50 GB",
+  "Amazon Prime": "Annual",
+  "Fitness First": "Gold",
+  "Du Home Internet": "Home Ultra",
+  "Canva Pro": "Pro",
+};
+
+const SUB_COLORS: Record<string, string> = {
+  Netflix: "#E50914",
+  Spotify: "#1DB954",
+  "Adobe Creative Cloud": "#FF0000",
+  "iCloud+": "#007AFF",
+  "Amazon Prime": "#FF9900",
+  "Fitness First": "#00E0B8",
+  "Du Home Internet": "#00A0D2",
+  "Canva Pro": "#00C4CC",
+};
+
+const SUB_ALTERNATIVES: Record<string, SubscriptionAlternative[]> = {
+  Netflix: [
+    { name: "Shahid", price: 19 },
+    { name: "OSN+", price: 35 },
+  ],
+  Spotify: [
+    { name: "Anghami", price: 15 },
+    { name: "Apple Music", price: 19.99 },
+  ],
+  "Du Home Internet": [
+    { name: "Etisalat eLife", price: 299 },
+    { name: "Virgin Mobile Home", price: 279 },
+  ],
+  "Fitness First": [
+    { name: "GymNation", price: 199 },
+    { name: "Fitness 360", price: 229 },
+  ],
+  "Adobe Creative Cloud": [
+    { name: "Affinity V2", price: 0 },
+    { name: "Canva Pro", price: 45 },
+  ],
+};
+
 export const subscriptions: Subscription[] = mockSubscriptions.map((s) => ({
   id: s.id,
   name: s.name,
+  plan: SUB_PLANS[s.name] ?? "Standard",
   amount: s.amount,
   billingCycle: "monthly" as const,
   nextBilling: "2026-06-01",
   category: s.category,
+  lastUsed: s.lastUsed,
+  status: deriveSubStatus(s.lastUsed, s.name),
+  logoColor: SUB_COLORS[s.name] ?? "#6366F1",
   active: s.status === "active",
+  snoozed: s.status === "paused",
+  customerMonths:
+    s.name === "Netflix"
+      ? 14
+      : s.name === "Du Home Internet"
+        ? 22
+        : s.name === "Spotify"
+          ? 9
+          : 6,
+  competitor:
+    s.name === "Netflix"
+      ? "Shahid"
+      : s.name === "Spotify"
+        ? "Anghami"
+        : s.name === "Du Home Internet"
+          ? "Etisalat eLife"
+          : undefined,
+  competitorPrice:
+    s.name === "Netflix"
+      ? 19
+      : s.name === "Spotify"
+        ? 15
+        : s.name === "Du Home Internet"
+          ? 299
+          : undefined,
+  alternatives: SUB_ALTERNATIVES[s.name],
 }));

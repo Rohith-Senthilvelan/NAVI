@@ -91,6 +91,27 @@ function mockAskNavi(messages: ChatMessage[], ctx: FinancialContext): AdvisorRes
     };
   }
 
+  if (/forecast|next 3 month|three month/.test(prompt)) {
+    return {
+      message: `Based on your last 30 days (AED ${ctx.monthlyExpenses.toLocaleString()}), Navi forecasts ~AED ${Math.round(ctx.monthlyExpenses * 1.02).toLocaleString()} in June, ~AED ${Math.round(ctx.monthlyExpenses * 0.97).toLocaleString()} in July if you trim Food delivery, and ~AED ${Math.round(ctx.monthlyExpenses * 1.05).toLocaleString()} in August with travel spend. **Action:** Set a AED 4,500 monthly spend cap to stay on track.`,
+      suggestions: ["Set spend cap", "Show category forecast"],
+    };
+  }
+
+  if (/20,?000|20k|twelve month|12 month/.test(prompt)) {
+    return {
+      message: `To reach AED 20,000 in 12 months you need ~AED 1,667/month. Your current surplus after expenses is roughly AED ${(ctx.monthlyIncome - ctx.monthlyExpenses).toLocaleString()}/mo — achievable if you redirect unused subs (AED ${unusedTotal.toFixed(0)}/mo) and AED 500 from Shopping. **Action:** Auto-save AED 1,700/month to a dedicated goal starting next payday.`,
+      suggestions: ["Create AED 20k goal", "Find AED 500 to cut"],
+    };
+  }
+
+  if (/500.*travel|save.*500|travel.*500/.test(prompt)) {
+    return {
+      message: `Your Bali goal is at AED ${bali?.current.toLocaleString()} / ${bali?.target.toLocaleString()}. Adding AED 500/mo gets you there ~4 months sooner. Shopping is AED ${ctx.topCategories.find((c) => c.category === "Shopping")?.spent} spent this month — room to shift. **Action:** Move AED 200 from Shopping to Savings for Bali.`,
+      suggestions: ["Boost Bali goal", "Review Shopping spend"],
+    };
+  }
+
   if (/invest|stock|etf|grow|portfolio/.test(prompt)) {
     return {
       message: `Before investing, shore up your Emergency Fund (AED ${emergency?.current.toLocaleString()} / ${emergency?.target.toLocaleString()}). Once at AED 5,000+, a low-cost UAE ETF via a regulated platform fits your profile. **Action:** Finish Emergency Fund first, then start AED 500/mo into a diversified ETF after reaching 50% of the goal.`,
@@ -153,6 +174,72 @@ export async function askNavi(
   } catch {
     return mockAskNavi(messages, context);
   }
+}
+
+export async function streamAskNavi(
+  messages: ChatMessage[],
+  context: FinancialContext
+): Promise<ReadableStream<Uint8Array>> {
+  const apiKey = process.env.OPENAI_API_KEY;
+  const encoder = new TextEncoder();
+
+  if (!apiKey) {
+    const mock = await askNavi(messages, context);
+    return new ReadableStream({
+      start(controller) {
+        controller.enqueue(
+          encoder.encode(`data: ${JSON.stringify({ text: mock.message })}\n\n`)
+        );
+        controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+        controller.close();
+      },
+    });
+  }
+
+  const openai = new OpenAI({ apiKey });
+  const contextBlock = formatContext(context);
+
+  const chatMessages: OpenAI.Chat.ChatCompletionMessageParam[] = [
+    {
+      role: "system",
+      content: `${SYSTEM_PROMPT}\n\nUser financial context:\n${contextBlock}`,
+    },
+    ...messages.map((m) => ({
+      role: m.role as "user" | "assistant",
+      content: m.content,
+    })),
+  ];
+
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: chatMessages,
+    stream: true,
+    max_tokens: 500,
+  });
+
+  return new ReadableStream({
+    async start(controller) {
+      try {
+        for await (const chunk of completion) {
+          const text = chunk.choices[0]?.delta?.content ?? "";
+          if (text) {
+            controller.enqueue(
+              encoder.encode(`data: ${JSON.stringify({ text })}\n\n`)
+            );
+          }
+        }
+        controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+        controller.close();
+      } catch {
+        const mock = await askNavi(messages, context);
+        controller.enqueue(
+          encoder.encode(`data: ${JSON.stringify({ text: mock.message })}\n\n`)
+        );
+        controller.enqueue(encoder.encode("data: [DONE]\n\n"));
+        controller.close();
+      }
+    },
+  });
 }
 
 /** @deprecated Use askNavi with messages array */
