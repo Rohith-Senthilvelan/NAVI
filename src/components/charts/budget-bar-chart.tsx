@@ -1,5 +1,6 @@
 "use client";
 
+import { CHART_PALETTE } from "@/lib/chart-palette";
 import { formatAED } from "@/lib/utils";
 import {
   Bar,
@@ -58,14 +59,14 @@ export function BudgetBarChart({ data }: { data: BudgetBarDatum[] }) {
         <Bar
           dataKey="budget"
           name="Budget"
-          fill="#00E0B8"
+          fill={CHART_PALETTE[0]}
           radius={[4, 4, 0, 0]}
           opacity={0.85}
         />
         <Bar
           dataKey="actual"
           name="Actual"
-          fill="#5BFFCC"
+          fill={CHART_PALETTE[4]}
           radius={[4, 4, 0, 0]}
           opacity={0.65}
         />

@@ -106,9 +106,9 @@ export function InsightsTrendLine({
             type="monotone"
             dataKey={cat}
             name={cat}
-            stroke={CATEGORY_COLORS[cat] ?? "#00E0B8"}
+            stroke={CATEGORY_COLORS[cat] ?? "#6E56FF"}
             strokeWidth={2}
-            dot={{ r: 3, fill: CATEGORY_COLORS[cat] ?? "#00E0B8" }}
+            dot={{ r: 3, fill: CATEGORY_COLORS[cat] ?? "#6E56FF" }}
             activeDot={{ r: 5 }}
           />
         ))}

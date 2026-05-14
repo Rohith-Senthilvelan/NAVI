@@ -1,5 +1,6 @@
 "use client";
 
+import { BRAND_PRIMARY } from "@/lib/chart-palette";
 import { formatAED } from "@/lib/utils";
 import {
   Cell,
@@ -28,17 +29,36 @@ export function SpendPieChart({
   selectedCategory,
   onSelectCategory,
 }: SpendPieChartProps) {
+  const activeIndex = selectedCategory
+    ? data.findIndex((d) => d.category === selectedCategory)
+    : -1;
+
   return (
-    <ResponsiveContainer width="100%" height="100%" minHeight={220}>
+    <ResponsiveContainer width="100%" height="100%" minHeight={280}>
       <PieChart>
+        {activeIndex >= 0 && (
+          <Pie
+            data={[{ value: 1 }]}
+            dataKey="value"
+            cx="50%"
+            cy="50%"
+            innerRadius={108}
+            outerRadius={112}
+            fill="none"
+            stroke={data[activeIndex]?.color ?? BRAND_PRIMARY}
+            strokeWidth={2}
+            isAnimationActive
+            animationDuration={600}
+          />
+        )}
         <Pie
           data={data}
           dataKey="value"
           nameKey="category"
           cx="50%"
           cy="50%"
-          innerRadius={68}
-          outerRadius={96}
+          innerRadius={82}
+          outerRadius={118}
           paddingAngle={2}
           stroke="transparent"
           onClick={(_, index) => {
