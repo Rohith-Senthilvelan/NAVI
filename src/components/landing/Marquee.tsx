@@ -24,7 +24,7 @@ export function Marquee() {
   const doubled = [...items, ...items];
 
   return (
-    <section className="relative overflow-hidden border-y border-white/10 py-6">
+    <section className="relative overflow-hidden border-y border-white/[0.06] py-6">
       <div className="group flex">
         <div className="gpu-layer flex min-w-full shrink-0 animate-marquee items-center gap-4 group-hover:[animation-play-state:paused]">
           {doubled.map((item, i) => (
@@ -54,7 +54,7 @@ function MarqueeCard({
   return (
     <div
       className={cn(
-        "mx-2 flex shrink-0 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 transition-colors hover:border-accent/30 hover:bg-white/[0.06]"
+        "mx-2 flex shrink-0 items-center gap-3 rounded-2xl border border-white/[0.06] bg-[#0B0D1F]/80 px-5 py-3 backdrop-blur-2xl transition-colors hover:border-accent/30 hover:shadow-card-hover"
       )}
     >
       <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent/10">

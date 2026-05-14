@@ -24,7 +24,7 @@ function BentoTile({
       variants={fadeUp}
       whileHover={{ y: -4 }}
       className={cn(
-        "group relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] p-6 transition-shadow hover:shadow-xl hover:shadow-accent/5",
+        "group relative overflow-hidden rounded-3xl border border-white/[0.06] bg-[#0B0D1F]/80 p-6 backdrop-blur-2xl transition-shadow hover:shadow-card-hover",
         gold && "border-gold/40 shadow-gold/5",
         className
       )}
@@ -76,7 +76,7 @@ function CoinJarIllustration() {
       <svg viewBox="0 0 100 80" className="h-24 w-24">
         <path d="M25 35 Q25 20 50 20 Q75 20 75 35 L75 65 Q75 75 50 75 Q25 75 25 65 Z" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="2" />
         <path d="M30 40 L70 40" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" />
-        <circle cx="50" cy="55" r="8" fill="#D4AF37" opacity="0.6" />
+        <circle cx="50" cy="55" r="8" fill="#F5C453" opacity="0.6" />
       </svg>
       {[0, 1, 2].map((i) => (
         <div
@@ -101,9 +101,9 @@ function PieIllustration() {
       transition={{ duration: 0.6 }}
     >
       <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="12" />
-      <circle cx="50" cy="50" r="40" fill="none" stroke="#00E0B8" strokeWidth="12" strokeDasharray="100 151" strokeLinecap="round" transform="rotate(-90 50 50)" />
-      <circle cx="50" cy="50" r="40" fill="none" stroke="#5BFFCC" strokeWidth="12" strokeDasharray="60 191" strokeLinecap="round" transform="rotate(30 50 50)" />
-      <circle cx="50" cy="50" r="40" fill="none" stroke="#D4AF37" strokeWidth="12" strokeDasharray="40 211" strokeLinecap="round" transform="rotate(100 50 50)" />
+      <circle cx="50" cy="50" r="40" fill="none" stroke="#6E56FF" strokeWidth="12" strokeDasharray="100 151" strokeLinecap="round" transform="rotate(-90 50 50)" />
+      <circle cx="50" cy="50" r="40" fill="none" stroke="#9B7BFF" strokeWidth="12" strokeDasharray="60 191" strokeLinecap="round" transform="rotate(30 50 50)" />
+      <circle cx="50" cy="50" r="40" fill="none" stroke="#F5C453" strokeWidth="12" strokeDasharray="40 211" strokeLinecap="round" transform="rotate(100 50 50)" />
     </motion.svg>
   );
 }
@@ -163,7 +163,7 @@ function BusinessIllustration() {
   return (
     <div className="flex items-center gap-3">
       <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-gold/30 bg-gold/10">
-        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="#D4AF37" strokeWidth="1.5">
+        <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="#F5C453" strokeWidth="1.5">
           <rect x="3" y="7" width="18" height="13" rx="2" />
           <path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2" />
         </svg>
@@ -184,10 +184,8 @@ export function BentoGrid() {
     <SectionWrapper id="features" className="py-32">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-16 max-w-2xl">
-          <p className="mb-4 text-sm font-medium uppercase tracking-widest text-accent">
-            Features
-          </p>
-          <h2 className="font-display text-4xl text-text-high sm:text-5xl">
+          <p className="type-eyebrow mb-4">Features</p>
+          <h2 className="type-h2">
             Everything your money needs. Nothing it doesn&apos;t.
           </h2>
         </div>

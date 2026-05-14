@@ -3,14 +3,18 @@
 import dynamic from "next/dynamic";
 import { Navbar } from "@/components/landing/Navbar";
 import { Hero } from "@/components/landing/Hero";
-import { Marquee } from "@/components/landing/Marquee";
+import { LogoMarquee } from "@/components/landing/LogoMarquee";
 
-const ProblemSolution = dynamic(
-  () => import("@/components/landing/ProblemSolution").then((m) => m.ProblemSolution),
+const BigStatStrip = dynamic(
+  () => import("@/components/landing/BigStatStrip").then((m) => m.BigStatStrip),
   { ssr: false }
 );
-const BentoGrid = dynamic(
-  () => import("@/components/landing/BentoGrid").then((m) => m.BentoGrid),
+const ProductShowcase = dynamic(
+  () => import("@/components/landing/ProductShowcase").then((m) => m.ProductShowcase),
+  { ssr: false }
+);
+const BentoFeatures = dynamic(
+  () => import("@/components/landing/BentoFeatures").then((m) => m.BentoFeatures),
   { ssr: false }
 );
 const AdvisorShowcase = dynamic(
@@ -21,20 +25,24 @@ const HowItWorks = dynamic(
   () => import("@/components/landing/HowItWorks").then((m) => m.HowItWorks),
   { ssr: false }
 );
-const Pricing = dynamic(
-  () => import("@/components/landing/Pricing").then((m) => m.Pricing),
+const Testimonials = dynamic(
+  () => import("@/components/landing/Testimonials").then((m) => m.Testimonials),
   { ssr: false }
 );
-const Manifesto = dynamic(
-  () => import("@/components/landing/Manifesto").then((m) => m.Manifesto),
+const Pricing = dynamic(
+  () => import("@/components/landing/Pricing").then((m) => m.Pricing),
   { ssr: false }
 );
 const Faq = dynamic(
   () => import("@/components/landing/Faq").then((m) => m.Faq),
   { ssr: false }
 );
-const CtaBlock = dynamic(
-  () => import("@/components/landing/CtaBlock").then((m) => m.CtaBlock),
+const BigCta = dynamic(
+  () => import("@/components/landing/BigCta").then((m) => m.BigCta),
+  { ssr: false }
+);
+const Footer = dynamic(
+  () => import("@/components/landing/Footer").then((m) => m.Footer),
   { ssr: false }
 );
 
@@ -44,15 +52,17 @@ export default function HomePage() {
       <Navbar />
       <main className="overflow-x-hidden">
         <Hero />
-        <Marquee />
-        <ProblemSolution />
-        <BentoGrid />
+        <LogoMarquee />
+        <BigStatStrip />
+        <ProductShowcase />
+        <BentoFeatures />
         <AdvisorShowcase />
         <HowItWorks />
+        <Testimonials />
         <Pricing />
-        <Manifesto />
         <Faq />
-        <CtaBlock />
+        <BigCta />
+        <Footer />
       </main>
     </>
   );

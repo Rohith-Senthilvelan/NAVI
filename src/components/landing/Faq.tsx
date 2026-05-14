@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown } from "lucide-react";
 import { SectionWrapper, fadeUp, staggerContainer } from "@/components/landing/motion";
 import { cn } from "@/lib/utils";
 
-const faqs = [
+const FAQS = [
   {
     q: "Is Navi available outside the UAE?",
     a: "Navi is built for the UAE market first — AED-native, with local bank integrations and regulatory compliance. Expansion to GCC markets is on our roadmap.",
@@ -37,40 +36,64 @@ export function Faq() {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <SectionWrapper className="py-32">
-      <div className="mx-auto max-w-3xl px-6">
-        <motion.div variants={fadeUp} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className="mb-12 text-center">
-          <p className="mb-4 text-sm font-medium uppercase tracking-widest text-accent">FAQ</p>
-          <h2 className="font-display text-4xl text-text-high">Questions? We&apos;ve got answers.</h2>
+    <SectionWrapper className="py-24 md:py-32">
+      <div className="mx-auto max-w-3xl px-6 md:px-10">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          className="mb-12 text-center"
+        >
+          <p className="type-eyebrow mb-3">FAQ</p>
+          <h2 className="type-h2">Questions? We&apos;ve got answers.</h2>
         </motion.div>
 
-        <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }} className="space-y-3">
-          {faqs.map((faq, i) => (
-            <motion.div key={faq.q} variants={fadeUp} className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
-              <button
-                type="button"
-                onClick={() => setOpen(open === i ? null : i)}
-                className="flex w-full items-center justify-between px-6 py-5 text-left"
-              >
-                <span className="pr-4 font-medium text-text-high">{faq.q}</span>
-                <ChevronDown className={cn("h-5 w-5 shrink-0 text-text-mid transition-transform", open === i && "rotate-180")} />
-              </button>
-              <AnimatePresence>
-                {open === i && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.15 }}
+          className="space-y-3"
+        >
+          {FAQS.map((faq, i) => {
+            const isOpen = open === i;
+            return (
+              <motion.div key={faq.q} variants={fadeUp} className="card-glass overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setOpen(isOpen ? null : i)}
+                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
+                >
+                  <span className="font-medium text-text-high">{faq.q}</span>
+                  <span
+                    className={cn(
+                      "flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/[0.08] text-lg text-text-mid transition-transform duration-200",
+                      isOpen && "rotate-45 border-accent/30 text-accent"
+                    )}
+                    aria-hidden
                   >
-                    <p className="border-t border-white/10 px-6 pb-5 pt-3 text-sm leading-relaxed text-text-mid">
-                      {faq.a}
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
+                    +
+                  </span>
+                </button>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <p className="border-t border-white/[0.06] px-6 pb-5 pt-3 text-sm leading-relaxed text-text-mid">
+                        {faq.a}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
         </motion.div>
       </div>
     </SectionWrapper>

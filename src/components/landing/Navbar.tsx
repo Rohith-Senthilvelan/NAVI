@@ -10,7 +10,7 @@ const links = [
   { label: "Product", href: "#product" },
   { label: "Features", href: "#features" },
   { label: "Pricing", href: "#pricing" },
-  { label: "Manifesto", href: "#manifesto" },
+  { label: "Manifesto", href: "/manifesto" },
 ];
 
 export function Navbar() {
@@ -27,16 +27,14 @@ export function Navbar() {
     <div className="pointer-events-none fixed inset-x-0 top-6 z-50 flex justify-center px-4">
       <nav
         className={cn(
-          "pointer-events-auto flex w-[min(92%,900px)] items-center justify-between rounded-full border border-white/10 bg-primary/80 px-5 shadow-2xl transition-[width,padding,background-color,border-color] duration-300 ease-out",
-          scrolled &&
-            "w-[min(78%,720px)] border-white/20 bg-primary/90 shadow-accent/5"
+          "pointer-events-auto flex h-14 w-[min(92%,900px)] items-center justify-between rounded-full border border-white/[0.06] bg-[#0B0D1F]/80 px-2.5 shadow-2xl backdrop-blur-2xl transition-[width,background-color,border-color] duration-300 ease-out",
+          scrolled && "w-[min(78%,720px)] border-white/[0.1] bg-[#0B0D1F]/90"
         )}
-        style={{ paddingTop: scrolled ? 10 : 16, paddingBottom: scrolled ? 10 : 16 }}
         aria-label="Main navigation"
       >
-        <Link href="/" className="group flex items-center gap-2">
+        <Link href="/" className="group flex items-center gap-2 pl-2">
           <Sparkles className="h-4 w-4 text-accent transition-transform group-hover:rotate-12" />
-          <span className="bg-gradient-to-r from-accent via-accent-secondary to-white bg-clip-text text-lg font-semibold tracking-tight text-transparent">
+          <span className="text-lg font-bold tracking-tight text-white">
             Navi
           </span>
         </Link>
@@ -53,7 +51,7 @@ export function Navbar() {
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 pr-1">
           <Link
             href="/login"
             className="hidden rounded-full px-4 py-2 text-sm text-text-mid transition-colors hover:bg-white/5 hover:text-text-high sm:inline-flex"
@@ -61,9 +59,7 @@ export function Navbar() {
             Sign in
           </Link>
           <MagneticButton href="/login">
-            <span className="inline-flex items-center rounded-full bg-gradient-to-r from-accent to-white px-5 py-2.5 text-sm font-semibold text-primary shadow-lg shadow-accent/20 transition-shadow hover:shadow-accent/40">
-              Open Navi
-            </span>
+            <span className="btn-primary px-5 py-2.5 text-sm">Open Navi</span>
           </MagneticButton>
         </div>
       </nav>

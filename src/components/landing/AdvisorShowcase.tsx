@@ -1,118 +1,112 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { SectionWrapper, fadeUp, staggerContainer } from "@/components/landing/motion";
-import { MagneticButton } from "@/components/shared/magnetic-button";
+import { Check } from "lucide-react";
+import {
+  motion,
+  useScroll,
+  useMotionValueEvent,
+  AnimatePresence,
+} from "framer-motion";
+import dynamic from "next/dynamic";
+import { useRef, useState } from "react";
+import { fadeUp, staggerContainer } from "@/components/landing/motion";
+import type { Conversation } from "@/components/landing/chat-conversation";
+import { formatAED } from "@/lib/format";
 
-const USER_MSG = "Can I afford a trip to Bali this month?";
-const NAVI_MSG =
-  "Based on your last 30 days, you have AED 2,140 in flexible spend. A 4-day Bali trip averages AED 3,800. If you shift AED 500 from Shopping and pause your unused subscriptions (AED 220), you'll be there. Want me to lock it in?";
+const ChatConversation = dynamic(
+  () =>
+    import("@/components/landing/chat-conversation").then(
+      (m) => m.ChatConversation
+    ),
+  { ssr: false }
+);
 
-function useTypewriter(text: string, active: boolean, speed = 28) {
-  const [displayed, setDisplayed] = useState("");
-  useEffect(() => {
-    if (!active) return;
-    setDisplayed("");
-    let i = 0;
-    const interval = setInterval(() => {
-      if (i <= text.length) {
-        setDisplayed(text.slice(0, i));
-        i++;
-      } else clearInterval(interval);
-    }, speed);
-    return () => clearInterval(interval);
-  }, [text, active, speed]);
-  return displayed;
-}
+const CLAIMS = [
+  "Answers in plain English — no jargon, no dashboards to decode.",
+  "Plans with your real numbers, not generic templates.",
+  "Executes only what you approve — you\u2019re always in control.",
+];
+
+const CONVERSATIONS: Conversation[] = [
+  {
+    user: "Can I afford a Bali trip in August?",
+    navi: `Based on your last 30 days, you have ${formatAED(2140)} in flexible spend. A 4-day Bali trip averages ${formatAED(3800)}. If you reroute ${formatAED(500, { suffix: "/mo" })} from Shopping and pause 2 unused subs (${formatAED(220)}), you'll have it by Aug 12. Want me to lock it in?`,
+    primaryCta: "Yes, plan it",
+    secondaryCta: "Show me the math",
+    secondaryHref: "/demo",
+  },
+  {
+    user: "Which subscriptions should I pause this month?",
+    navi: `Netflix hasn't been opened in 47 days (${formatAED(39, { suffix: "/mo" })}). Adobe CC and Canva overlap — pausing both frees ${formatAED(275, { suffix: "/mo" })} without touching essentials. I can draft cancel emails you approve before sending.`,
+    primaryCta: "Review subs",
+    secondaryCta: "Draft emails",
+    secondaryHref: "/subscriptions",
+  },
+];
 
 export function AdvisorShowcase() {
-  const [phase, setPhase] = useState<"user" | "navi" | "done">("user");
-  const [started, setStarted] = useState(false);
-  const userText = useTypewriter(USER_MSG, started && phase === "user");
-  const naviText = useTypewriter(NAVI_MSG, phase === "navi" || phase === "done");
+  const containerRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  useEffect(() => {
-    if (!started) return;
-    if (phase === "user" && userText.length === USER_MSG.length) {
-      const t = setTimeout(() => setPhase("navi"), 600);
-      return () => clearTimeout(t);
-    }
-    if (phase === "navi" && naviText.length === NAVI_MSG.length) {
-      const t = setTimeout(() => setPhase("done"), 400);
-      return () => clearTimeout(t);
-    }
-  }, [started, phase, userText, naviText]);
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    setActiveIndex(v >= 0.5 ? 1 : 0);
+  });
 
   return (
-    <SectionWrapper className="py-32">
-      <div className="mx-auto grid max-w-7xl items-center gap-16 px-6 lg:grid-cols-2">
-        <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
-          <motion.p variants={fadeUp} className="mb-4 text-sm font-medium uppercase tracking-widest text-accent">
-            AI Advisor
-          </motion.p>
-          <motion.h2 variants={fadeUp} className="font-display text-4xl leading-tight text-text-high sm:text-5xl">
-            Talk to Navi like you&apos;d talk to your accountant.
-          </motion.h2>
-          <motion.p variants={fadeUp} className="mt-6 text-lg text-text-mid">
-            No jargon. No dashboards to decode. Just ask — and Navi plans, calculates, and executes.
-          </motion.p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          onViewportEnter={() => setStarted(true)}
-          className="rounded-3xl border border-white/10 bg-white/[0.04] p-6"
-        >
-          <div className="mb-4 flex items-center gap-2 border-b border-white/10 pb-4">
-            <motion.div className="h-3 w-3 rounded-full bg-accent" />
-            <span className="text-sm font-medium text-text-high">Navi Advisor</span>
-            <span className="ml-auto text-xs text-text-mid">Live</span>
-          </div>
-
-          <div className="space-y-4 min-h-[320px]">
-            <AnimatePresence>
-              {started && (
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="ml-auto max-w-[85%] rounded-2xl rounded-tr-sm bg-white/10 px-4 py-3 text-sm text-text-high"
+    <section ref={containerRef} id="advisor" className="relative h-[220vh]">
+      <div className="sticky top-0 flex h-screen items-center py-24 md:py-32">
+        <motion.div className="mx-auto grid w-full max-w-7xl items-center gap-6 px-6 md:grid-cols-2 md:gap-6 md:px-10">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <motion.p variants={fadeUp} className="type-eyebrow mb-4">
+              AI Advisor
+            </motion.p>
+            <motion.h2 variants={fadeUp} className="type-h2">
+              Talk to Navi the way you&apos;d talk to your accountant.
+            </motion.h2>
+            <motion.ul variants={staggerContainer} className="mt-8 space-y-4">
+              {CLAIMS.map((claim) => (
+                <motion.li
+                  key={claim}
+                  variants={fadeUp}
+                  className="flex items-start gap-3 text-sm leading-relaxed text-text-mid"
                 >
-                  {userText}
-                  {phase === "user" && userText.length < USER_MSG.length && (
-                    <span className="animate-blink text-accent">|</span>
-                  )}
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {(phase === "navi" || phase === "done") && (
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                className="max-w-[90%] rounded-2xl rounded-tl-sm border border-accent/20 bg-accent/5 px-4 py-3 text-sm leading-relaxed text-text-high"
-              >
-                {naviText}
-                {phase === "navi" && naviText.length < NAVI_MSG.length && (
-                  <span className="animate-blink text-accent">|</span>
-                )}
-              </motion.div>
-            )}
-
-            {phase === "done" && (
-              <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-                <MagneticButton href="/login">
-                  <span className="inline-flex rounded-full bg-gradient-to-r from-accent to-accent-secondary px-5 py-2.5 text-sm font-semibold text-primary">
-                    Yes, plan it
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/15">
+                    <Check className="h-3 w-3 text-accent" />
                   </span>
-                </MagneticButton>
+                  {claim}
+                </motion.li>
+              ))}
+            </motion.ul>
+          </motion.div>
+
+          <div className="relative h-[420px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeIndex}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -24 }}
+                transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute inset-0"
+              >
+                <ChatConversation
+                  conversation={CONVERSATIONS[activeIndex]}
+                  play
+                />
               </motion.div>
-            )}
+            </AnimatePresence>
           </div>
         </motion.div>
       </div>
-    </SectionWrapper>
+    </section>
   );
 }

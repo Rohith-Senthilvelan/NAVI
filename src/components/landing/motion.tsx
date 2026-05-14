@@ -4,27 +4,27 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export const sectionReveal: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
 export const staggerContainer: Variants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.06 },
+    transition: { staggerChildren: 0.05 },
   },
 };
 
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 24 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.4, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
   },
 };
 
@@ -44,9 +44,9 @@ export function SectionWrapper({
       id={id}
       initial={reduced ? false : "hidden"}
       whileInView={reduced ? undefined : "visible"}
-      viewport={{ once: true, amount: 0.12, margin: "0px 0px -60px 0px" }}
+      viewport={{ once: true, amount: 0.2 }}
       variants={reduced ? undefined : sectionReveal}
-      className={cn("section-defer", className)}
+      className={cn("section-defer py-24 md:py-32", className)}
     >
       {children}
     </motion.section>
