@@ -4,26 +4,26 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-primary disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-primary disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
         default:
-          "bg-accent text-accent-foreground shadow hover:bg-accent-secondary",
+          "bg-gradient-button font-bold text-white shadow-btn-primary hover:shadow-btn-primary-hover",
         destructive:
-          "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+          "rounded-md bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
         outline:
-          "border border-white/10 bg-transparent shadow-sm hover:bg-white/5 hover:text-text-high",
+          "rounded-md border border-white/[0.06] bg-transparent text-white shadow-sm hover:border-[rgba(110,86,255,0.35)] hover:bg-white/5",
         secondary:
-          "bg-surface text-text-high shadow-sm hover:bg-surface/80",
-        ghost: "hover:bg-white/5 hover:text-text-high",
-        link: "text-accent underline-offset-4 hover:underline",
-        gold: "bg-gold text-gold-foreground shadow hover:bg-gold/90",
+          "border border-white/[0.06] bg-glass font-medium text-white backdrop-blur-2xl hover:border-[rgba(110,86,255,0.35)]",
+        ghost: "rounded-md hover:bg-white/5 hover:text-text-high",
+        link: "rounded-none text-accent underline-offset-4 hover:underline",
+        gold: "bg-gradient-premium font-bold text-primary shadow-btn-primary hover:shadow-btn-primary-hover",
       },
       size: {
         default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-11 rounded-md px-8",
+        sm: "h-9 px-3 text-xs",
+        lg: "h-12 px-7 py-3.5 text-sm",
         icon: "h-10 w-10",
       },
     },
