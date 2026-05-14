@@ -144,12 +144,12 @@ function NavLink({
         "group relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all duration-200",
         collapsed && "justify-center px-2",
         active
-          ? "bg-gradient-to-r from-accent/10 via-accent/5 to-transparent text-text-high"
+          ? "bg-gradient-to-r from-accent/20 via-accent/10 to-transparent text-text-high shadow-[inset_0_1px_0_rgba(110,86,255,0.15)]"
           : "text-text-mid hover:bg-white/[0.04] hover:text-text-high"
       )}
     >
       {active && (
-        <span className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-full bg-accent shadow-[0_0_12px_rgba(0,224,184,0.6)]" />
+        <span className="absolute left-0 top-1/2 h-5 w-[3px] -translate-y-1/2 rounded-r-full bg-accent shadow-[0_0_12px_rgba(110,86,255,0.6)]" />
       )}
       <span className="relative flex shrink-0 items-center">
         <Icon
@@ -237,7 +237,7 @@ export function Sidebar({ className }: { className?: string }) {
         </button>
       </div>
 
-      <nav className="flex-1 space-y-6 overflow-y-auto px-3 pb-4">
+      <nav className="flex-1 space-y-6 overflow-y-auto px-3 pb-4" data-lenis-prevent>
         {NAV_GROUPS.map((group) => (
           <div key={group.title}>
             {!collapsed && (

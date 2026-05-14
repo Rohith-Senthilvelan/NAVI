@@ -16,7 +16,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
       <Sidebar className="hidden lg:flex" />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar />
-        <main className="relative flex-1 overflow-y-auto pb-20 lg:pb-0">
+        <main className="relative flex-1 overflow-y-auto pb-20 lg:pb-0" data-lenis-prevent>
           <div
             className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28 bg-gradient-to-b from-primary via-primary/60 to-transparent"
             aria-hidden

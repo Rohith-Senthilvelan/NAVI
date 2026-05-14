@@ -5,6 +5,7 @@ import { useTheme } from "next-themes";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useUIStore, useUserStore } from "@/lib/store";
+import { formatAED } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
 const ROUTE_LABELS: Record<string, string> = {
@@ -80,7 +81,7 @@ export function Topbar() {
       <div className="hidden flex-1 flex-col items-center text-center lg:flex">
         <p className="text-sm font-medium text-text-high">{greeting}</p>
         <p className="text-xs text-text-mid">
-          <span className="text-accent/80">AED 12,480</span> available across
+          <span className="text-accent/80">{formatAED(12480, { compact: true })}</span> available across
           accounts
         </p>
       </div>
@@ -112,7 +113,7 @@ export function Topbar() {
         <button
           type="button"
           onClick={() => setAdvisorDrawerOpen(true)}
-          className="flex items-center gap-2 rounded-full border border-accent/25 bg-gradient-to-r from-accent/15 to-accent/5 px-4 py-2 text-sm font-medium text-accent transition-all hover:border-accent/40 hover:from-accent/25 hover:to-accent/10"
+          className="flex items-center gap-2 rounded-full bg-gradient-button px-4 py-2 text-sm font-semibold text-white shadow-btn-primary transition-all hover:opacity-90"
           aria-label="Ask Navi"
         >
           <Sparkles className="h-3.5 w-3.5" />

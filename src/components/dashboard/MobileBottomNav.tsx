@@ -46,7 +46,7 @@ export function MobileBottomNav() {
               <Icon
                 className={cn(
                   "h-5 w-5",
-                  active && "drop-shadow-[0_0_8px_rgba(0,224,184,0.5)]"
+                  active && "drop-shadow-[0_0_8px_rgba(110,86,255,0.5)]"
                 )}
               />
               {item.label}
