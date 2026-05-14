@@ -1,26 +1,37 @@
 "use client";
 
 import { AdvisorDrawer } from "@/components/advisor/AdvisorDrawer";
+import { MobileBottomNav } from "@/components/dashboard/MobileBottomNav";
 import { Sidebar } from "@/components/dashboard/Sidebar";
 import { Topbar } from "@/components/dashboard/Topbar";
+import { CommandPalette } from "@/components/shared/command-palette";
+import { NaviErrorBoundary } from "@/components/shared/navi-error-boundary";
+import { OnboardingTour } from "@/components/shared/onboarding-tour";
+import { PitchOrchestrator } from "@/components/shared/pitch-orchestrator";
+import { Toaster } from "@/components/shared/toaster";
 
 export function DashboardShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen bg-primary">
-      <Sidebar />
+      <Sidebar className="hidden lg:flex" />
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar />
-        <main className="relative flex-1 overflow-y-auto">
+        <main className="relative flex-1 overflow-y-auto pb-20 lg:pb-0">
           <div
             className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28 bg-gradient-to-b from-primary via-primary/60 to-transparent"
             aria-hidden
           />
           <div className="relative mx-auto max-w-[1400px] px-6 py-8 lg:px-10 lg:py-10">
-            {children}
+            <NaviErrorBoundary>{children}</NaviErrorBoundary>
           </div>
         </main>
       </div>
       <AdvisorDrawer />
+      <MobileBottomNav />
+      <CommandPalette />
+      <Toaster />
+      <OnboardingTour />
+      <PitchOrchestrator />
     </div>
   );
 }

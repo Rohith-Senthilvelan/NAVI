@@ -113,6 +113,7 @@ export function Topbar() {
           type="button"
           onClick={() => setAdvisorDrawerOpen(true)}
           className="flex items-center gap-2 rounded-full border border-accent/25 bg-gradient-to-r from-accent/15 to-accent/5 px-4 py-2 text-sm font-medium text-accent transition-all hover:border-accent/40 hover:from-accent/25 hover:to-accent/10"
+          aria-label="Ask Navi"
         >
           <Sparkles className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">Ask Navi</span>

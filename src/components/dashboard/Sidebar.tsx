@@ -170,7 +170,7 @@ function NavLink({
   );
 }
 
-export function Sidebar() {
+export function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname();
   const router = useRouter();
   const collapsed = useCollapsedSidebar();
@@ -183,9 +183,12 @@ export function Sidebar() {
 
   return (
     <aside
+      data-tour="sidebar"
+      aria-label="Main navigation"
       className={cn(
         "sticky top-0 flex h-screen shrink-0 flex-col border-r border-white/10 bg-white/[0.03] backdrop-blur-[24px] transition-[width] duration-300 ease-out",
-        collapsed ? "w-[72px]" : "w-[260px]"
+        collapsed ? "w-[72px]" : "w-[260px]",
+        className
       )}
     >
       <div
@@ -212,11 +215,15 @@ export function Sidebar() {
       <div className={cn("px-3 py-4", collapsed && "px-2")}>
         <button
           type="button"
+          onClick={() =>
+            window.dispatchEvent(new CustomEvent("navi:open-command-palette"))
+          }
           className={cn(
             "flex w-full items-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2.5 text-sm text-text-mid transition-colors hover:border-white/15 hover:bg-white/[0.05]",
             collapsed && "justify-center px-2"
           )}
           title="Search (⌘K)"
+          aria-label="Open command palette search"
         >
           <Search className="h-4 w-4 shrink-0" />
           {!collapsed && (
