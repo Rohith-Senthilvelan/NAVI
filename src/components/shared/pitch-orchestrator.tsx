@@ -186,7 +186,7 @@ export function PitchOrchestrator() {
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <div className="pointer-events-auto w-full max-w-lg rounded-2xl border border-accent/25 bg-surface/95 p-4 shadow-[0_0_48px_-8px_rgba(0,224,184,0.35)] backdrop-blur-xl">
+        <div className="pointer-events-auto w-full max-w-lg rounded-2xl border border-accent/25 bg-surface/95 p-4 shadow-[0_0_48px_-8px_rgba(110,86,255,0.35)] backdrop-blur-xl">
           <motion.div
             className="mb-2 flex items-center gap-2"
             key={caption}

@@ -36,7 +36,7 @@ export class NaviErrorBoundary extends Component<Props, State> {
           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl border border-accent/20 bg-accent/10">
             <Sparkles className="h-6 w-6 text-accent" />
           </div>
-          <h2 className="font-display text-2xl text-text-high">
+          <h2 className="text-2xl font-bold text-text-high">
             {this.props.fallbackTitle ?? "Something went sideways"}
           </h2>
           <p className="mt-2 max-w-md text-sm text-text-mid">
