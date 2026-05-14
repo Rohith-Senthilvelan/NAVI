@@ -23,7 +23,7 @@
     --color-gold: #d4af37;
     --color-surface: #11162a;
     --color-text-high: #f5f7fa;
-    --color-text-mid: #a0aec0;
+    --color-text-mid: #94a3b8;
     --color-glass: rgba(255, 255, 255, 0.04);
     --gradient-hero: linear-gradient(
       135deg,
@@ -45,6 +45,15 @@
   body {
     @apply bg-primary text-text-high antialiased;
     font-family: var(--font-geist-sans), system-ui, sans-serif;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-primary;
+  }
+
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]) {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-primary;
   }
 
   ::selection {
