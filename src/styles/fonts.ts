@@ -1,5 +1,4 @@
 import localFont from "next/font/local";
-import { Instrument_Serif } from "next/font/google";
 
 export const geistSans = localFont({
   src: "../app/fonts/GeistVF.woff",
@@ -15,11 +14,4 @@ export const geistMono = localFont({
   display: "swap",
 });
 
-export const instrumentSerif = Instrument_Serif({
-  subsets: ["latin"],
-  variable: "--font-instrument-serif",
-  weight: "400",
-  display: "swap",
-});
-
-export const fontVariables = `${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable}`;
+export const fontVariables = `${geistSans.variable} ${geistMono.variable}`;

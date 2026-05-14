@@ -13,21 +13,30 @@ const config: Config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#0A0E1A",
-          foreground: "#F5F7FA",
+          DEFAULT: "#05060F",
+          foreground: "#FFFFFF",
         },
         accent: {
-          DEFAULT: "#00E0B8",
-          secondary: "#5BFFCC",
-          foreground: "#0A0E1A",
+          DEFAULT: "#6E56FF",
+          secondary: "#9B7BFF",
+          tertiary: "#4F46FF",
+          foreground: "#FFFFFF",
         },
         gold: {
-          DEFAULT: "#D4AF37",
-          foreground: "#0A0E1A",
+          DEFAULT: "#F5C453",
+          deep: "#C9952B",
+          foreground: "#05060F",
         },
         surface: {
-          DEFAULT: "#11162A",
-          foreground: "#F5F7FA",
+          DEFAULT: "#0B0D1F",
+          elevated: "#11142B",
+          foreground: "#FFFFFF",
+        },
+        cyan: {
+          DEFAULT: "#4FD1FF",
+        },
+        pink: {
+          DEFAULT: "#FF6FB5",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",
@@ -44,19 +53,33 @@ const config: Config = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
-        "text-high": "#F5F7FA",
-        "text-mid": "#A0AEC0",
+        "text-high": "#FFFFFF",
+        "text-mid": "#B4B8D4",
+        "text-low": "#6B7099",
+        brand: {
+          primary: "#6E56FF",
+          secondary: "#9B7BFF",
+          tertiary: "#4F46FF",
+          glow: "#8B6FFF",
+        },
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
         mono: ["var(--font-geist-mono)", "monospace"],
-        display: ["var(--font-instrument-serif)", "Georgia", "serif"],
       },
       backgroundImage: {
         "gradient-hero":
-          "linear-gradient(135deg, #0A0E1A 0%, #1B2349 50%, #00E0B8 140%)",
+          "radial-gradient(1200px 600px at 20% 0%, #2A1F6E 0%, transparent 60%), radial-gradient(900px 500px at 80% 30%, #4F46FF22 0%, transparent 55%), #05060F",
+        "gradient-button": "linear-gradient(135deg, #6E56FF 0%, #9B7BFF 100%)",
+        "gradient-premium": "linear-gradient(135deg, #F5C453 0%, #FF8E3C 100%)",
         noise:
           "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+      },
+      boxShadow: {
+        "btn-primary": "0 8px 32px rgba(110,86,255,0.35)",
+        "btn-primary-hover": "0 12px 48px rgba(110,86,255,0.45)",
+        "card-hover":
+          "inset 0 1px 0 rgba(255,255,255,0.04), 0 24px 64px -12px rgba(110,86,255,0.25)",
       },
       backdropBlur: {
         glass: "24px",
@@ -100,6 +123,11 @@ const config: Config = {
           "80%": { transform: "translateY(40px) rotate(180deg)", opacity: "1" },
           "100%": { transform: "translateY(50px) rotate(200deg)", opacity: "0" },
         },
+        "blob-drift": {
+          "0%, 100%": { transform: "translate(0, 0) scale(1)" },
+          "33%": { transform: "translate(30px, -20px) scale(1.05)" },
+          "66%": { transform: "translate(-20px, 15px) scale(0.95)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -109,6 +137,7 @@ const config: Config = {
         blink: "blink 1s step-end infinite",
         float: "float 6s ease-in-out infinite",
         "coin-drop": "coin-drop 2s ease-in infinite",
+        "blob-drift": "blob-drift 60s ease-in-out infinite",
       },
     },
   },
