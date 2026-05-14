@@ -1,117 +1,186 @@
+<div align="center">
+
 # Navi
 
-**Money that thinks for you.**
+### Money that thinks for you.
 
-Navi is an AI-powered financial coach built for individuals and SMEs in the UAE. It unifies budgeting, savings, subscriptions, and investment guidance into one conversational interface — so you always know what to do next with your money, without opening five banking apps.
+An AI-native financial coach for individuals and SMEs in the UAE — budgeting, savings, subscriptions, and investment guidance in one conversational experience.
+
+<br />
+
+[![Next.js](https://img.shields.io/badge/Next.js_14-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![React](https://img.shields.io/badge/React_18-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![OpenAI](https://img.shields.io/badge/OpenAI_API-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
+
+<br />
+
+[**Try it**](#try-it) · [**Features**](#features) · [**Architecture**](#architecture) · [**Roadmap**](#roadmap)
+
+</div>
 
 ---
 
-## Demo credentials
+## Overview
 
-| Field    | Value            |
-| -------- | ---------------- |
-| Email    | `user@navi.demo` |
-| Password | `Demo123!@#`     |
+Most people in the Gulf manage money across several banking apps, subscription services, and informal savings goals. Information is fragmented; insight arrives too late.
 
-**Pitch mode:** visit [`/demo`](http://localhost:3000/demo) for a 90-second auto-guided tour (press **SPACE** to pause).
+**Navi** consolidates that picture into a single intelligent layer. Users see live financial KPIs, receive proactive alerts, and interact with an AI advisor that recommends concrete actions — rebalance a budget category, pause an unused subscription, or boost a savings goal — without switching contexts.
 
-**Reset during a live demo:** Settings → **Reset demo data**.
+This repository is a **production-quality product prototype**: a full-stack Next.js application with a polished marketing site, authenticated dashboard, mock financial data layer, streaming AI advisor, and demo tooling built for live presentations and technical evaluation.
 
 ---
 
-## Quick start
+## Try it
+
+### Demo credentials
+
+| Field    | Value              |
+| -------- | ------------------ |
+| Email    | `user@navi.demo`   |
+| Password | `Demo123!@#`       |
+
+### Local setup
 
 ```bash
-npm install && npm run dev
+git clone https://github.com/Rohith-Senthilvelan/NAVI.git
+cd NAVI
+npm install
+npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Log in with the demo credentials above.
+Open [http://localhost:3000](http://localhost:3000), sign in with the credentials above, and explore the dashboard.
 
-### Bundle analysis
+### Guided experiences
 
-```bash
-npm run analyze
-```
+| Route | Purpose |
+| ----- | ------- |
+| `/` | Marketing landing page |
+| `/login` | Authenticated entry to the product |
+| `/demo` | 90-second auto-guided pitch tour (press **Space** to pause) |
+| `/dashboard` | Financial command center |
+| `/advisor` | Full-page AI coach |
+| `/manifesto` | Product vision |
 
-Opens an interactive bundle report after build.
-
----
-
-## Tech stack
-
-| Layer      | Tools                                              |
-| ---------- | -------------------------------------------------- |
-| Framework  | Next.js 14 (App Router), React 18, TypeScript      |
-| Styling    | Tailwind CSS, Radix UI, Framer Motion              |
-| State      | Zustand (persisted user + advisor chat)            |
-| Charts     | Recharts (lazy-loaded per route)                   |
-| AI         | OpenAI API (advisor route with mock fallback)    |
-| Fonts      | Geist (local), Instrument Serif via `next/font`    |
+**Presenter tip:** use **Settings → Reset demo data** to restore factory mock state between walkthroughs.
 
 ---
 
 ## Features
 
-| Feature | Description |
-| ------- | ----------- |
-| Dashboard | Live KPIs, spend breakdown, budget health, recent transactions |
-| Budget | Category caps, rebalance suggestions, vs-actual charts |
-| Savings | Goals, round-ups, one-tap boosts |
-| Insights | Signature Digs feed, spending heatmap, category trends |
-| Subscriptions | Unused-sub detection, pause/cancel flows |
-| Advisor | Streaming AI coach with actionable cards |
-| Circles | Group savings with payout schedules |
-| Invest | Risk profiler + suggested allocation |
-| Onboarding | 4-step first-login product tour |
+| Module | What it does |
+| ------ | ------------ |
+| **Dashboard** | Balance, spend, savings, and round-up KPIs with spend breakdown and recent transactions |
+| **Budget** | Category caps, vs-actual charts, rebalance suggestions, and overspend alerts |
+| **Savings** | Goal tracking, round-ups, and one-tap goal boosts |
+| **Insights** | Signature Digs feed — personalized spending insights with one-click actions |
+| **Subscriptions** | Unused-subscription detection with pause and cancel flows |
+| **Advisor** | Streaming AI financial coach with executable action cards |
+| **Circles** | Group savings with contribution history and payout schedules |
+| **Invest** | Risk profiler and illustrative portfolio allocation |
+| **Onboarding** | Four-step first-login product tour |
+| **Pitch mode** | Scripted auto-navigation for demos and investor meetings |
 
-### Screenshots
+---
 
-> _Add screenshots here before the pitch._
+## Architecture
 
-| Screen | Placeholder |
-| ------ | ----------- |
-| Landing | `![Landing](./docs/screenshots/landing.png)` |
-| Dashboard | `![Dashboard](./docs/screenshots/dashboard.png)` |
-| Advisor | `![Advisor](./docs/screenshots/advisor.png)` |
-| Insights | `![Insights](./docs/screenshots/insights.png)` |
+```
+┌─────────────────────────────────────────────────────────────┐
+│  Next.js 14 App Router                                      │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────────┐  │
+│  │ Landing /    │  │ Dashboard    │  │ API Routes       │  │
+│  │ Auth pages   │  │ (client UI)  │  │ /api/advisor …   │  │
+│  └──────────────┘  └──────────────┘  └──────────────────┘  │
+└─────────────────────────────────────────────────────────────┘
+         │                    │                    │
+         ▼                    ▼                    ▼
+   Framer Motion         Zustand stores        OpenAI + Zod
+   Radix UI + TW         (persisted state)     (validated AI I/O)
+```
+
+### Engineering highlights
+
+- **App Router & TypeScript** — typed routes, server/client component split, middleware-protected dashboard
+- **Zustand** — modular stores for user preferences, finance data, advisor chat, and UI shell state
+- **Lazy-loaded charts** — Recharts split per route via `next/dynamic` to keep initial bundles lean
+- **AI advisor** — streaming responses through `/api/advisor` with structured context and mock fallback when no API key is set
+- **Accessibility** — focus-visible rings, aria labels on interactive controls, WCAG-minded contrast tokens
+- **Performance** — `next/font` with `display: swap`, `content-visibility` on landing sections, bundle analyzer via `npm run analyze`
+- **Demo tooling** — seed reset, onboarding tour, and scripted pitch orchestrator for repeatable presentations
+
+### Tech stack
+
+| Layer | Technologies |
+| ----- | ------------ |
+| Framework | Next.js 14, React 18, TypeScript |
+| Styling | Tailwind CSS, Radix UI, Framer Motion |
+| State | Zustand (localStorage persistence for user + chat) |
+| Data viz | Recharts (route-level code splitting) |
+| AI | OpenAI API, Zod validation |
+| Fonts | Geist (local), Instrument Serif via `next/font` |
+| Tooling | ESLint, `@next/bundle-analyzer` |
+
+### Project structure
+
+```
+src/
+├── app/                  # Routes (landing, dashboard, API, OG image)
+├── components/
+│   ├── dashboard/        # Shell, sidebar, KPI cards, navigation
+│   ├── landing/          # Marketing page sections
+│   ├── charts/           # Lazy-loaded Recharts modules
+│   └── shared/           # Command palette, toaster, tours, pitch mode
+├── lib/                  # Store, mock data, AI, insights, invest helpers
+├── hooks/                # Shared React hooks
+└── styles/               # Font configuration
+```
+
+---
+
+## Product narrative
+
+**Problem.** Fragmented accounts and reactive budgeting leave users guessing — overspend is noticed after the fact, and subscriptions quietly drain cash flow.
+
+**Solution.** Navi acts as a always-on financial coach: it surfaces what matters, explains trade-offs in plain language, and offers one-tap fixes grounded in the user's actual numbers.
+
+**Vision.** Become the default money layer for the Gulf — personal finance today, Arabic-first experiences, open-banking connectivity, and an SME advisor tier tomorrow.
 
 ---
 
 ## Roadmap
 
-- **Multi-bank aggregation** — live feeds from UAE banks via open banking
-- **Real APIs** — production Plaid/Lean/Tarabut integrations, not mock data
-- **Arabic-first** — RTL layout, Gulf dialect advisor, localized insights
-- **Business advisor** — SME cash-flow coach, VAT reminders, team seats
+| Phase | Focus |
+| ----- | ----- |
+| **Now** | Product prototype with mock data and AI advisor |
+| **Next** | Multi-bank aggregation via UAE open-banking (Lean / Tarabut) |
+| **Then** | Arabic-first UI, RTL layout, Gulf-dialect advisor |
+| **Later** | Business advisor — VAT, cash flow, team seats for SMEs |
 
 ---
 
-## Pitch story
+## Scripts
 
-### Problem
+| Command | Description |
+| ------- | ----------- |
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm run start` | Serve production build |
+| `npm run lint` | Run ESLint |
+| `npm run analyze` | Build with bundle size report |
 
-People in the Gulf juggle multiple accounts, subscriptions, and savings goals across apps that never talk to each other. By the time they notice overspending, the month is already gone.
+---
 
-### Solution
+## Author
 
-Navi is a single AI coach that reads your financial picture, surfaces what matters, and proposes one-tap fixes — rebalance a budget, pause a unused sub, boost a goal.
+**Rohith Senthilvelan**  
+[github.com/Rohith-Senthilvelan](https://github.com/Rohith-Senthilvelan)
 
-### Demo flow
-
-1. **Dashboard** — KPIs and spend at a glance  
-2. **Ask Navi** — natural-language budget review with an action card  
-3. **Budget alert** — category crossing 80% cap  
-4. **Savings boost** — one-tap goal top-up  
-5. **Insights feed** — personalized Signature Digs  
-
-Run the full sequence automatically at `/demo`.
-
-### Vision
-
-Navi becomes the default money layer for the Gulf — personal finance today, business CFO tomorrow, Arabic-first and bank-connected at scale.
+Built as a portfolio-grade fintech product prototype demonstrating full-stack engineering, product design, and AI integration.
 
 ---
 
 ## License
 
-Private — hackathon demo build.
+This project is provided for portfolio and evaluation purposes. All rights reserved.
